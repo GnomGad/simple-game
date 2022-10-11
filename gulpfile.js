@@ -63,7 +63,7 @@ gulp.task('build', gulp.series( 'css', 'html', 'js', 'images'));
 
 //gul deploy to gh-pages
 gulp.task('deploy', function() {
-  return gulp.src('./dist/**/*')
+  return gulp.src('./build/**/*')
     .pipe(ghPages());
 });
 

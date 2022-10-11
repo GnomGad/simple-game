@@ -4,7 +4,8 @@
   "description": "",
   "main": "script.js",
   "scripts": {
-    "deploy": "gulp clean && gulp build && gh-pages -d build"
+    "deploy": "gulp clean && gulp build && gh-pages -d build",
+    "start": "gh-pages -d build"
   },
   "author": "",
   "license": "ISC",
