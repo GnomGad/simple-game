@@ -12,6 +12,7 @@ var gulp = require('gulp'), // Сообственно Gulp JS
   htmlmin = require('gulp-htmlmin'), // Минификация HTML
   clean = require('gulp-clean'), // Очистка
   browserify = require('gulp-browserify'), // Сборка модулей
+  ghPages = require('gulp-gh-pages'); // Деплой на GitHub Pages
 
 /*
  * 
@@ -59,6 +60,13 @@ gulp.task('clean', async function() {
 
 //gulp task build
 gulp.task('build', gulp.series( 'css', 'html', 'js', 'images'));
+
+//gul deploy to gh-pages
+gulp.task('deploy', function() {
+  return gulp.src('./dist/**/*')
+    .pipe(ghPages());
+});
+
 // watch
 gulp.task('watch', async function() {
   gulp.watch('./src/css/*', gulp.series('css'));
