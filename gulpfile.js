@@ -9,7 +9,9 @@ var gulp = require('gulp'), // Сообственно Gulp JS
   concat = require('gulp-concat'), // Склейка файлов
   imagemin = require('gulp-imagemin'), // Минификация изображений
   csso = require('gulp-csso') // Минификация CSS
-  htmlmin = require('gulp-htmlmin') // Минификация HTML
+  htmlmin = require('gulp-htmlmin'), // Минификация HTML
+  clean = require('gulp-clean'), // Очистка
+  browserify = require('gulp-browserify'), // Сборка модулей
 
 /*
  * 
@@ -17,11 +19,11 @@ var gulp = require('gulp'), // Сообственно Gulp JS
  *
  */
 
-// Задача "sass". Запускается командой "gulp sass"
+// Задача "css". Запускается командой "gulp css"
 gulp.task('css', async function () { 
-  gulp.src('./style.css') // файл, который обрабатываем
+  gulp.src('./src/css/*') // файл, который обрабатываем
     .pipe(csso()) // минифицируем css, полученный на предыдущем шаге
-    .pipe(gulp.dest('./build/')); // результат пишем по указанному адресу
+    .pipe(gulp.dest('./build/src/css/')); // результат пишем по указанному адресу
 });
 
 // Задача "html". Запускается командой "gulp html"
@@ -29,29 +31,38 @@ gulp.task('html', async function () {
   gulp.src('./*.html') // файл, который обрабатываем
     .pipe(htmlmin({ collapseWhitespace: true })) // минифицируем html, полученный на предыдущем шаге
     .pipe(gulp.dest('./build/')); // результат пишем по указанному адресу
+
 });
 
 // Задача "js". Запускается командой "gulp js"
 gulp.task('js', async function() {    
   gulp.src([
-    './script.js',
-  ]) 
+    
+    './src/js/script.js'
+  ])
+    .pipe(browserify())
     .pipe(uglify()) 
-    .pipe(gulp.dest('./build/')) 
+    .pipe(gulp.dest('./build/src/js/')); 
 });
 
 // Задача "images". Запускается командой "gulp images"
 gulp.task('images', async function() {
-  gulp.src('./assets/*') 
+  gulp.src('./src/assets/*') 
     .pipe(imagemin()) 
-    .pipe(gulp.dest('./build/assets/')) 
+    .pipe(gulp.dest('./build/src/assets/')) 
 
 });
+gulp.task('clean', async function() {
+  gulp.src('./build/*')
+    .pipe(clean());
+});
 
+//gulp task build
+gulp.task('build', gulp.series( 'css', 'html', 'js', 'images'));
 // watch
 gulp.task('watch', async function() {
-  gulp.watch('./style.css', gulp.series('css'));
+  gulp.watch('./src/css/*', gulp.series('css'));
   gulp.watch('./*.html', gulp.series('html'));
-  gulp.watch('./script.js', gulp.series('js'));
-  gulp.watch('./assets/*', gulp.series('images'));
+  gulp.watch('./src/js/*', gulp.series('js'));
+  gulp.watch('./src/assets/*', gulp.series('images'));
 });
