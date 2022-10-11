@@ -8,7 +8,9 @@
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {},
+  "dependencies": {
+    "gh-pages": "^4.0.0"
+  },
   "devDependencies": {
     "gulp": "^4.0.2",
     "gulp-browserify": "^0.5.1",
